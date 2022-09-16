@@ -6,7 +6,11 @@ public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D body;
     private float speed = 3f;
-    
+
+    public GameObject gameWonPanel;
+
+    private bool isGameWon = false;
+     
     
     // Start is called before the first frame update
     void Start()
@@ -17,6 +21,10 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     { 
+        if (isGameWon == true)
+        {
+            return;
+        }
         if (Input.GetKey(KeyCode.Space)) //Player won't move while space key is pressed.
         {
             body.velocity = new Vector2(0f, 0f);
@@ -49,6 +57,10 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Door")
+        {
             Debug.Log("Level Complete !!!");
+            gameWonPanel.SetActive(true);
+            isGameWon = true;
+        }     
     }
 }
