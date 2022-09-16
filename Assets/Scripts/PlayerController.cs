@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -8,8 +9,9 @@ public class PlayerController : MonoBehaviour
     private float speed = 3f;
 
     public GameObject gameWonPanel;
+    public GameObject gameLostPanel;
 
-    private bool isGameWon = false;
+    private bool isGameOver = false;
      
     
     // Start is called before the first frame update
@@ -21,8 +23,9 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     { 
-        if (isGameWon == true)
+        if (isGameOver == true)
         {
+            body.velocity = new Vector2(0f, 0f);
             return;
         }
         if (Input.GetKey(KeyCode.Space)) //Player won't move while space key is pressed.
@@ -60,7 +63,18 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("Level Complete !!!");
             gameWonPanel.SetActive(true);
-            isGameWon = true;
-        }     
+            isGameOver = true;
+        }
+        else if (other.tag == "Walls")
+        {
+            Debug.Log("Level Lost !!!");
+            gameLostPanel.SetActive(true);
+            isGameOver = true;
+        }
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
